@@ -6,7 +6,10 @@
 set -u
 
 INSTALL_SCRIPT="/opt/niranbox/install-target.sh"
-LOGO="/usr/share/pixmaps/niranbox-logo.png"
+# La version chica (160x160): yad no re-escala --image, y el pixmap grande
+# (1047x1047) hacia que la ventana ocupara toda la pantalla y los botones
+# quedaran fuera de la vista.
+LOGO="/usr/share/pixmaps/niranbox-logo-small.png"
 YAD_TITLE="Instalar NiranBox"
 
 yad_ok() { command -v yad >/dev/null 2>&1; }
