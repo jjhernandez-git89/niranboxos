@@ -51,9 +51,8 @@ if ! pacman -Q chaotic-keyring >/dev/null 2>&1; then
         'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
 fi
 if ! grep -q '^\[chaotic-aur\]' /etc/pacman.conf; then
-    echo "AVISO: tu /etc/pacman.conf (del host de build) no tiene [chaotic-aur]." >&2
-    echo "Anadelo (ver pacman.conf de este perfil) y vuelve a correr build.sh." >&2
-    exit 1
+    echo "==> Agregando el repo [chaotic-aur] al pacman.conf de este host de build"
+    printf '\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist\n' | ${SUDO} tee -a /etc/pacman.conf >/dev/null
 fi
 
 mkdir -p "${OUT_DIR}"
