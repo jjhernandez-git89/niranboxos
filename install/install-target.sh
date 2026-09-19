@@ -96,6 +96,8 @@ install -Dm644 "${SRC}usr/share/pixmaps/niranbox-logo.png" \
                /mnt/usr/share/pixmaps/niranbox-logo.png
 mkdir -p /mnt/usr/share/plymouth/themes/niranbox
 cp -a "${SRC}usr/share/plymouth/themes/niranbox/." /mnt/usr/share/plymouth/themes/niranbox/
+install -Dm644 "${SRC}etc/systemd/zram-generator.conf" \
+               /mnt/etc/systemd/zram-generator.conf
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
@@ -134,6 +136,7 @@ systemctl enable systemd-timesyncd.service
 systemctl enable bluetooth.service
 systemctl enable sddm.service
 systemctl enable cups.service
+systemctl enable reflector.service
 systemctl --global enable pipewire.service pipewire-pulse.service wireplumber.service
 
 # Splash de arranque: mete el hook 'plymouth' en mkinitcpio (justo despues de
