@@ -1,0 +1,96 @@
+# --- Base del sistema (igual que el perfil releng de archiso) ---
+base
+linux
+linux-firmware
+mkinitcpio
+mkinitcpio-archiso
+systemd-boot
+grub
+efibootmgr
+plymouth
+sudo
+nano
+vim
+git
+networkmanager
+openssh
+
+# --- Sistema de archivos / utilidades de instalacion ---
+arch-install-scripts
+btrfs-progs
+dosfstools
+e2fsprogs
+exfatprogs
+ntfs-3g
+parted
+gptfdisk
+
+# --- Audio ---
+pipewire
+pipewire-alsa
+pipewire-pulse
+pipewire-jack
+wireplumber
+
+# --- Graficos: drivers Mesa (Intel/AMD) + soporte NVIDIA + Vulkan ---
+mesa
+lib32-mesa
+vulkan-icd-loader
+lib32-vulkan-icd-loader
+vulkan-intel
+lib32-vulkan-intel
+vulkan-radeon
+lib32-vulkan-radeon
+xf86-video-amdgpu
+nvidia-open
+nvidia-utils
+lib32-nvidia-utils
+
+# --- Ofimatica ---
+# Apache OpenOffice no esta en los repos oficiales de Arch (solo existe como
+# paquete no oficial en AUR, sin mantenimiento reciente). LibreOffice es el
+# sucesor directo, mismo formato de archivos, y si esta en los repos
+# oficiales, asi que va preinstalado en el ISO.
+libreoffice-fresh
+libreoffice-fresh-es
+
+# --- Sesion de juego estilo SteamOS ---
+gamescope
+xorg-xwayland
+steam
+mangohud
+lib32-mangohud
+gamemode
+lib32-gamemode
+
+# --- Modo Escritorio (como el Steam Deck real), accesible desde Steam ---
+sddm
+plasma-desktop
+plasma-nm
+plasma-pa
+xdg-desktop-portal
+xdg-desktop-portal-kde
+dolphin
+konsole
+kate
+ark
+spectacle
+firefox
+bluez
+bluez-utils
+
+# --- Input (mandos) ---
+# El kernel de Arch ya trae xpad/hid-sony/hid-microsoft integrados (mandos
+# Xbox/PlayStation por cable o Bluetooth funcionan sin nada extra). El driver
+# xpadneo (mejor soporte Bluetooth para mandos Xbox) esta en AUR, no en los
+# repos oficiales, asi que no se puede meter en el ISO directamente: se
+# instala despues, ya con el sistema arriba, con un ayudante de AUR (yay/paru).
+
+# --- Instalador grafico (solo se usa en el USB live, para instalar en disco) ---
+xorg-server
+xorg-xinit
+xorg-xsetroot
+chaotic-keyring
+chaotic-mirrorlist
+calamares
+

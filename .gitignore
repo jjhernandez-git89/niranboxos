@@ -1,0 +1,6 @@
+# Salida de mkarchiso (el .iso compilado, no va en el repo)
+out/
+work/
+
+# Basura de macOS
+.DS_Store

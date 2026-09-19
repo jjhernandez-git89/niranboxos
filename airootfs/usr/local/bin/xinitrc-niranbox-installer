@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# .xinitrc del USB live: sin gestor de ventanas, solo fondo negro + Calamares
+# a pantalla completa (necesita root para particionar/instalar).
+set -u
+
+xsetroot -solid "#0b0b0d"
+xhost +SI:localuser:root >/dev/null 2>&1
+
+exec sudo calamares

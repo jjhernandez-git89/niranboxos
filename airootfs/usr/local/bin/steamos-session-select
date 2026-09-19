@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Emula el comando real de SteamOS: cambia que sesion usa SDDM para el
+# autologin y cierra la sesion actual para que se aplique.
+#
+#   steamos-session-select plasma      -> pasa a Modo Escritorio (KDE Plasma)
+#   steamos-session-select gamescope   -> vuelve al modo consola (Steam)
+#
+# Steam llama esto solo cuando detecta el flag -steamos3 (ver
+# start-gamescope-session.sh); si el boton "Cambiar a escritorio" de Steam no
+# aparece, este comando funciona igual invocado desde una terminal, o puedes
+# agregarlo como "juego no-Steam" en tu biblioteca para tener un icono.
+set -eu
+
+TARGET="${1:-}"
+case "${TARGET}" in
+    gamescope | gamescope-session)
+        SESSION_FILE="gamescope-session.desktop"
+        ;;
+    plasma | plasma-persistent | desktop)
+        SESSION_FILE="plasma.desktop"
+        ;;
+    *)
+        echo "Uso: steamos-session-select {gamescope|plasma}" >&2
+        exit 1
+        ;;
+esac
+
+if [ ! -f "/usr/share/wayland-sessions/${SESSION_FILE}" ] && \
+   [ ! -f "/usr/share/xsessions/${SESSION_FILE}" ]; then
+    echo "Aviso: no encuentro ${SESSION_FILE} en wayland-sessions/xsessions." >&2
+    echo "Revisa 'ls /usr/share/wayland-sessions/' y ajusta el nombre si hace falta." >&2
+fi
+
+sudo sed -i "s/^Session=.*/Session=${SESSION_FILE}/" /etc/sddm.conf.d/autologin.conf
+
+# Cierra la sesion grafica actual; con Relogin=true, SDDM vuelve a entrar
+# sola con la sesion que acabamos de configurar arriba.
+loginctl terminate-user "$(whoami)"

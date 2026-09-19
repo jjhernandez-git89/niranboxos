@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=NiranBox
+Description=Tema de arranque de NiranBox
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/niranbox
+ScriptFile=/usr/share/plymouth/themes/niranbox/niranbox.script

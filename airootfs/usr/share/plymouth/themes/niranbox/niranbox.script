@@ -1,0 +1,50 @@
+// Tema de arranque NiranBox: logo blanco centrado sobre fondo negro,
+// con puntos animados debajo mientras carga.
+
+Window.SetBackgroundTopColor(0, 0, 0);
+Window.SetBackgroundBottomColor(0, 0, 0);
+
+logo.image = Image("logo.png");
+logo_width = logo.image.GetWidth();
+logo_height = logo.image.GetHeight();
+
+// El logo no debe ocupar mas del 40% del ancho de pantalla
+max_width = Window.GetWidth() * 0.4;
+if (logo_width > max_width) {
+    scale = max_width / logo_width;
+    logo.image = logo.image.Scale(logo_width * scale, logo_height * scale);
+    logo_width = logo.image.GetWidth();
+    logo_height = logo.image.GetHeight();
+}
+
+logo.sprite = Sprite(logo.image);
+logo.sprite.SetX(Window.GetX() + Window.GetWidth() / 2 - logo_width / 2);
+logo.sprite.SetY(Window.GetY() + Window.GetHeight() / 2 - logo_height / 2);
+logo.sprite.SetZ(10000);
+
+message_sprite = Sprite();
+message_sprite.SetZ(10000);
+
+dot_count = 0;
+
+fun refresh_callback() {
+    dot_count = (dot_count + 1) % 40;
+    n = Math.Int(dot_count / 10);
+    dots = "";
+    i = 0;
+    while (i < n) {
+        dots = dots + ".";
+        i++;
+    }
+    msg_image = Image.Text("Iniciando" + dots, 1, 1, 1, 1, "Sans 14");
+    message_sprite.SetImage(msg_image);
+    message_sprite.SetX(Window.GetX() + Window.GetWidth() / 2 - msg_image.GetWidth() / 2);
+    message_sprite.SetY(Window.GetY() + Window.GetHeight() / 2 + logo_height / 2 + 30);
+}
+
+Plymouth.SetRefreshFunction(refresh_callback);
+
+fun quit_callback() {
+    Plymouth.Quit();
+}
+Plymouth.SetQuitFunction(quit_callback);
