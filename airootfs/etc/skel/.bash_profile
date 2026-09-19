@@ -1,7 +1,6 @@
-# Sesion del USB live (arranca el instalador grafico Calamares).
-# NOTA: install/install-target.sh y el paso final de Calamares SOBREESCRIBEN
-# este archivo en el sistema ya instalado para que, en vez del instalador,
-# arranque la sesion de juego (start-gamescope-session.sh).
+# Sesion del USB live: arranca el instalador grafico propio (yad).
+# El sistema ya instalado no usa este archivo -- ahi el login lo maneja SDDM
+# (ver install/install-target.sh), directo a la sesion de juego.
 if [ -z "${DISPLAY:-}" ] && [ "$(tty)" = "/dev/tty1" ]; then
     exec startx /usr/local/bin/xinitrc-niranbox-installer -- vt1
 fi

@@ -37,23 +37,14 @@ if [ ! -d /etc/pacman.d/gnupg ] || [ -z "$(ls -A /etc/pacman.d/gnupg 2>/dev/null
     ${SUDO} pacman-key --populate archlinux
 fi
 
-# El instalador grafico (calamares) no esta en los repos oficiales de Arch,
-# solo en Chaotic-AUR (repo binario de terceros). Sin este paso, mkarchiso no
-# podria resolver/firmar ese paquete y el build fallaria.
-if ! pacman-key --list-keys 3056513887B78AEB >/dev/null 2>&1; then
-    echo "==> Dando de alta la llave de Chaotic-AUR (necesaria para 'calamares')"
-    ${SUDO} pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
-    ${SUDO} pacman-key --lsign-key 3056513887B78AEB
-fi
-if ! pacman -Q chaotic-keyring >/dev/null 2>&1; then
-    ${SUDO} pacman -U --noconfirm \
-        'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' \
-        'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
-fi
-if ! grep -q '^\[chaotic-aur\]' /etc/pacman.conf; then
-    echo "==> Agregando el repo [chaotic-aur] al pacman.conf de este host de build"
-    printf '\n[chaotic-aur]\nInclude = /etc/pacman.d/chaotic-mirrorlist\n' | ${SUDO} tee -a /etc/pacman.conf >/dev/null
-fi
+# El instalador grafico y el manual (dentro del ISO) necesitan su propia
+# copia de estos archivos; se sincroniza sola en cada build para no tener
+# que acordarse de hacerlo a mano.
+mkdir -p "${PROFILE_DIR}/airootfs/opt/niranbox"
+cp "${PROFILE_DIR}/distro.conf" "${PROFILE_DIR}/packages.x86_64" \
+   "${PROFILE_DIR}/install/install-target.sh" \
+   "${PROFILE_DIR}/airootfs/opt/niranbox/"
+chmod 755 "${PROFILE_DIR}/airootfs/opt/niranbox/install-target.sh"
 
 mkdir -p "${OUT_DIR}"
 ${SUDO} mkarchiso -v -o "${OUT_DIR}" "${PROFILE_DIR}"

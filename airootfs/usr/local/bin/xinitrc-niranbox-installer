@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# .xinitrc del USB live: sin gestor de ventanas, solo fondo negro + Calamares
-# a pantalla completa (necesita root para particionar/instalar).
+# .xinitrc del USB live: sin gestor de ventanas, solo fondo negro + nuestro
+# instalador grafico (yad) a pantalla completa.
 set -u
 
 xsetroot -solid "#0b0b0d"
 xhost +SI:localuser:root >/dev/null 2>&1
 
-exec sudo calamares
+exec sudo /usr/local/bin/niranbox-installer-gui.sh
