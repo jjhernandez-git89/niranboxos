@@ -96,6 +96,7 @@ systemctl enable NetworkManager.service
 systemctl enable systemd-timesyncd.service
 systemctl enable bluetooth.service
 systemctl enable sddm.service
+systemctl enable cups.service
 systemctl --global enable pipewire.service pipewire-pulse.service wireplumber.service
 
 # Splash de arranque: mete el hook 'plymouth' en mkinitcpio (justo despues de

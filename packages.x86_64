@@ -86,6 +86,22 @@ p7zip
 unzip
 zip
 
+# --- Oficina: lo que le faltaba al Modo Escritorio ---
+okular                  # lector de PDF/ePub/etc (KDE)
+cups                    # impresion
+print-manager           # anadir/gestionar impresoras desde KDE
+system-config-printer
+gvfs                    # monta unidades, papelera, miniaturas en Dolphin
+gvfs-mtp                # celulares/Android por USB
+gvfs-smb                # carpetas compartidas de red (Windows/Samba)
+xdg-user-dirs           # crea ~/Documentos, ~/Descargas, etc.
+ttf-liberation          # fuentes compatibles con Arial/Calibri/Times (Office)
+noto-fonts
+noto-fonts-emoji
+hunspell
+hunspell-es_any         # corrector ortografico en espanol para LibreOffice
+hunspell-en_us
+
 # --- Input (mandos) ---
 # El kernel de Arch ya trae xpad/hid-sony/hid-microsoft integrados (mandos
 # Xbox/PlayStation por cable o Bluetooth funcionan sin nada extra). El driver
