@@ -11,14 +11,30 @@ set -e -u -o pipefail
 PROFILE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OUT_DIR="${PROFILE_DIR}/out"
 
+# Root ya (ej. dentro de un contenedor Docker, ver build-in-docker.sh) no
+# necesita sudo; en un Arch normal con un usuario si.
+SUDO="sudo"
+if [ "$(id -u)" -eq 0 ]; then
+    SUDO=""
+fi
+
 if [ "$(uname -s)" != "Linux" ]; then
     echo "Este script debe correr en Linux (no macOS). Ver comentario arriba." >&2
     exit 1
 fi
 
 if ! command -v mkarchiso >/dev/null 2>&1; then
-    echo "Falta 'archiso'. Instalalo con: sudo pacman -S --needed archiso" >&2
+    echo "Falta 'archiso'. Instalalo con: ${SUDO} pacman -S --needed archiso" >&2
     exit 1
+fi
+
+if ! command -v pacman-key >/dev/null 2>&1; then
+    echo "Falta pacman-key (no parece un sistema Arch)." >&2
+    exit 1
+fi
+if [ ! -d /etc/pacman.d/gnupg ] || [ -z "$(ls -A /etc/pacman.d/gnupg 2>/dev/null)" ]; then
+    ${SUDO} pacman-key --init
+    ${SUDO} pacman-key --populate archlinux
 fi
 
 # El instalador grafico (calamares) no esta en los repos oficiales de Arch,
@@ -26,11 +42,11 @@ fi
 # podria resolver/firmar ese paquete y el build fallaria.
 if ! pacman-key --list-keys 3056513887B78AEB >/dev/null 2>&1; then
     echo "==> Dando de alta la llave de Chaotic-AUR (necesaria para 'calamares')"
-    sudo pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
-    sudo pacman-key --lsign-key 3056513887B78AEB
+    ${SUDO} pacman-key --recv-key 3056513887B78AEB --keyserver keyserver.ubuntu.com
+    ${SUDO} pacman-key --lsign-key 3056513887B78AEB
 fi
 if ! pacman -Q chaotic-keyring >/dev/null 2>&1; then
-    sudo pacman -U --noconfirm \
+    ${SUDO} pacman -U --noconfirm \
         'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' \
         'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst'
 fi
@@ -41,6 +57,6 @@ if ! grep -q '^\[chaotic-aur\]' /etc/pacman.conf; then
 fi
 
 mkdir -p "${OUT_DIR}"
-sudo mkarchiso -v -o "${OUT_DIR}" "${PROFILE_DIR}"
+${SUDO} mkarchiso -v -o "${OUT_DIR}" "${PROFILE_DIR}"
 
 echo "Listo. ISO generada en: ${OUT_DIR}"
