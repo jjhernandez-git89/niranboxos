@@ -79,6 +79,13 @@ firefox
 bluez
 bluez-utils
 
+# --- Compresion/descompresion (usados por Ark y el explorador de archivos) ---
+unrar
+unarchiver
+p7zip
+unzip
+zip
+
 # --- Input (mandos) ---
 # El kernel de Arch ya trae xpad/hid-sony/hid-microsoft integrados (mandos
 # Xbox/PlayStation por cable o Bluetooth funcionan sin nada extra). El driver
