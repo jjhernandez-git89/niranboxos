@@ -141,7 +141,7 @@ systemctl --global enable pipewire.service pipewire-pulse.service wireplumber.se
 
 # Splash de arranque: mete el hook 'plymouth' en mkinitcpio (justo despues de
 # 'base udev') y activa el tema NiranBox, que regenera el initramfs solo.
-sed -i -E 's/^(HOOKS=\([^)]*udev)/\1 plymouth/' /etc/mkinitcpio.conf
+sed -i -E 's/^(HOOKS=\([^)]*\b(udev|systemd)\b)/\1 plymouth/' /etc/mkinitcpio.conf
 plymouth-set-default-theme -R niranbox
 
 bootctl install
