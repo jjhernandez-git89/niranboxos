@@ -5,6 +5,10 @@ set -e -u
 
 DISTRO_USER="deck"
 
+# Sin password tambien para root: evita que systemd-firstboot se quede
+# esperando que alguien la escriba en el primer arranque del USB live.
+passwd -d root
+
 useradd -m -G wheel,video,input,render,audio,storage -s /bin/bash "${DISTRO_USER}"
 # En la ISO live no pedimos password para poder loguear/instalar rapido.
 passwd -d "${DISTRO_USER}"
