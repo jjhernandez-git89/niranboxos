@@ -5,6 +5,13 @@ set -e -u
 
 DISTRO_USER="deck"
 
+# Sin esto, el propio USB live no tiene un llavero de pacman confiable, y
+# "pacstrap -K" (usado por install-target.sh / el instalador grafico para
+# sembrar el llavero del disco nuevo) falla con "keyring is not writable" /
+# "required key missing from keyring" apenas alguien intenta instalar.
+pacman-key --init
+pacman-key --populate archlinux
+
 # Sin password tambien para root: evita que systemd-firstboot se quede
 # esperando que alguien la escriba en el primer arranque del USB live.
 passwd -d root
