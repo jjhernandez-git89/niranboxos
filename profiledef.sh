@@ -16,8 +16,10 @@ iso_version="$(date +%Y.%m.%d)"
 # encontrar el squashfs en /run/archiso/bootmnt/arch/x86_64/airootfs.sfs.
 install_dir="arch"
 buildmodes=('iso')
-bootmodes=('bios.syslinux.mbr' 'bios.syslinux.eltorito'
-           'uefi-x64.systemd-boot.esp' 'uefi-x64.systemd-boot.eltorito')
+# Solo UEFI (moderno): casi todo el hardware de los ultimos ~10 anos lo trae.
+# Se deja fuera el arranque BIOS/syslinux para no tener que mantener tambien
+# esa carpeta (syslinux/) por separado.
+bootmodes=('uefi.systemd-boot')
 arch="x86_64"
 pacman_conf="${_profile_dir}/pacman.conf"
 airootfs_image_type="squashfs"
