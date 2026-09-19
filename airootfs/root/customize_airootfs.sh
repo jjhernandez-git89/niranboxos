@@ -25,6 +25,12 @@ echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 
+# El pacman-mirrorlist por defecto viene con todos los mirrors comentados
+# (hay que elegirlos a mano). Sin esto, pacstrap del propio instalador
+# (install-target.sh / la GUI) falla con "no servers configured for
+# repository" apenas alguien intenta instalar desde el USB live.
+reflector --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist || true
+
 # Deja NiranBox como tema Plymouth por defecto. Nota: el splash visual en el
 # propio USB live no esta garantizado (archiso arma su initramfs con su
 # propio preset, no con /etc/mkinitcpio.conf). La instalacion persistente en
