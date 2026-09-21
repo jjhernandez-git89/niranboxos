@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Volver a Modo Juego
+Comment=Vuelve a la sesion de Steam (modo consola)
+Exec=steamos-session-select gamescope
+Icon=/usr/share/pixmaps/niranbox-logo.png
+Type=Application
+Terminal=false
+Categories=System;

@@ -133,10 +133,13 @@ hunspell-en_us
 # repos oficiales, asi que no se puede meter en el ISO directamente: se
 # instala despues, ya con el sistema arriba, con un ayudante de AUR (yay/paru).
 
-# --- Instalador grafico propio (solo se usa en el USB live, para instalar
-# en disco). Calamares habria sido lo ideal, pero no existe en los repos
-# oficiales de Arch NI en Chaotic-AUR (se verifico directamente contra su
-# base de datos), asi que se descarto por completo -- esto es 100% oficial.
+# --- Instalador grafico propio. Calamares habria sido lo ideal, pero no
+# existe en los repos oficiales de Arch NI en Chaotic-AUR (se verifico
+# directamente contra su base de datos), asi que se descarto por completo
+# -- esto es 100% oficial.
+# xorg-server/xorg-xinit/xorg-xsetroot: solo hacen falta en el USB live
+# (arrancan el instalador). yad tambien se usa ya instalado, para la
+# bienvenida del primer arranque (ver niranbox-session-launcher.sh).
 xorg-server
 xorg-xinit
 xorg-xsetroot

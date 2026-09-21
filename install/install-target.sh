@@ -51,20 +51,27 @@ if [ "${NIRANBOX_ASSUME_YES:-0}" != "1" ]; then
 fi
 
 EFI_PART="${DISK}1"
-ROOT_PART="${DISK}2"
+RECOVERY_PART="${DISK}2"
+ROOT_PART="${DISK}3"
 if [[ "${DISK}" == *"nvme"* ]]; then
     EFI_PART="${DISK}p1"
-    ROOT_PART="${DISK}p2"
+    RECOVERY_PART="${DISK}p2"
+    ROOT_PART="${DISK}p3"
 fi
 
-echo "==> Particionando ${DISK} (GPT: 512MiB EFI + resto root)"
+# La particion RECOVERY guarda una copia del propio medio de instalacion
+# (el mismo squashfs+kernel del USB), para poder reinstalar de fabrica
+# desde el menu de arranque sin necesitar el USB otra vez.
+echo "==> Particionando ${DISK} (GPT: 1GiB EFI + 4GiB recuperacion + resto root)"
 sgdisk --zap-all "${DISK}"
-sgdisk -n1:0:+512MiB -t1:ef00 -c1:EFI "${DISK}"
-sgdisk -n2:0:0       -t2:8300 -c2:ROOT "${DISK}"
+sgdisk -n1:0:+1GiB   -t1:ef00 -c1:EFI "${DISK}"
+sgdisk -n2:0:+4GiB   -t2:8300 -c2:RECOVERY "${DISK}"
+sgdisk -n3:0:0       -t3:8300 -c3:ROOT "${DISK}"
 partprobe "${DISK}"
 
 echo "==> Formateando"
 mkfs.fat -F32 -n EFI "${EFI_PART}"
+mkfs.ext4 -F -L RECOVERY "${RECOVERY_PART}"
 mkfs.ext4 -F -L ROOT "${ROOT_PART}"
 
 echo "==> Montando"
@@ -88,12 +95,18 @@ fi
 install -Dm644 "${SRC}etc/os-release" /mnt/etc/os-release
 install -Dm755 "${SRC}usr/local/bin/start-gamescope-session.sh" \
                /mnt/usr/local/bin/start-gamescope-session.sh
+install -Dm755 "${SRC}usr/local/bin/niranbox-session-launcher.sh" \
+               /mnt/usr/local/bin/niranbox-session-launcher.sh
 install -Dm755 "${SRC}usr/local/bin/steamos-session-select" \
                /mnt/usr/local/bin/steamos-session-select
 install -Dm644 "${SRC}usr/share/wayland-sessions/gamescope-session.desktop" \
                /mnt/usr/share/wayland-sessions/gamescope-session.desktop
+install -Dm644 "${SRC}usr/share/applications/niranbox-volver-a-juego.desktop" \
+               /mnt/usr/share/applications/niranbox-volver-a-juego.desktop
 install -Dm644 "${SRC}usr/share/pixmaps/niranbox-logo.png" \
                /mnt/usr/share/pixmaps/niranbox-logo.png
+install -Dm644 "${SRC}usr/share/pixmaps/niranbox-logo-small.png" \
+               /mnt/usr/share/pixmaps/niranbox-logo-small.png
 mkdir -p /mnt/usr/share/plymouth/themes/niranbox
 cp -a "${SRC}usr/share/plymouth/themes/niranbox/." /mnt/usr/share/plymouth/themes/niranbox/
 install -Dm644 "${SRC}etc/systemd/zram-generator.conf" \
@@ -147,7 +160,7 @@ plymouth-set-default-theme -R niranbox
 bootctl install
 cat > /boot/loader/loader.conf <<'EOF'
 default niranbox.conf
-timeout 3
+timeout 10
 console-mode max
 EOF
 ROOT_UUID="$(findmnt -no UUID /)"
@@ -157,7 +170,52 @@ linux   /vmlinuz-linux
 initrd  /initramfs-linux.img
 options root=UUID=${ROOT_UUID} rw quiet splash
 EOF
+
+mkdir -p /usr/share/applications
+cat > /usr/share/applications/niranbox-restaurar.desktop <<'EOF'
+[Desktop Entry]
+Name=Restaurar NiranBox de fabrica
+Comment=Reinicia y abre el instalador para reinstalar NiranBox desde cero
+Exec=systemctl reboot --boot-loader-entry=recovery
+Icon=/usr/share/pixmaps/niranbox-logo.png
+Type=Application
+Terminal=false
+Categories=System;
+EOF
 CHROOT_EOF
+
+INSTALL_DIR_NAME="${DISTRO_NAME,,}"
+LIVE_BOOTMNT="/run/archiso/bootmnt"
+if [ -d "${LIVE_BOOTMNT}/${INSTALL_DIR_NAME}/x86_64" ]; then
+    echo "==> Preparando particion de recuperacion (copia de fabrica)"
+    mkdir -p /mnt-recovery
+    mount "${RECOVERY_PART}" /mnt-recovery
+    mkdir -p "/mnt-recovery/${INSTALL_DIR_NAME}/x86_64"
+    cp -a "${LIVE_BOOTMNT}/${INSTALL_DIR_NAME}/x86_64/airootfs.sfs" \
+          "/mnt-recovery/${INSTALL_DIR_NAME}/x86_64/airootfs.sfs"
+    cp -a "${LIVE_BOOTMNT}/${INSTALL_DIR_NAME}/boot/x86_64/vmlinuz-linux" /mnt/boot/vmlinuz-recovery
+    cp -a "${LIVE_BOOTMNT}/${INSTALL_DIR_NAME}/boot/x86_64/initramfs-linux.img" /mnt/boot/initramfs-recovery.img
+    umount /mnt-recovery
+    rmdir /mnt-recovery
+    RECOVERY_UUID="$(blkid -s UUID -o value "${RECOVERY_PART}")"
+    # copytoram=y es obligatorio aqui (a diferencia del USB): la recuperacion
+    # reinstala sobre EL MISMO disco del que arranco. Sin copiar el squashfs
+    # entero a RAM primero, sgdisk --zap-all destruiria la particion RECOVERY
+    # mientras el sistema live la sigue usando para arrancar -> crash. Un
+    # mini PC de gama gamer siempre trae RAM de sobra (8GB+) para esto.
+    cat > /mnt/boot/loader/entries/recovery.conf <<EOF
+title   Restaurar NiranBox (borra todo y reinstala de fabrica)
+linux   /vmlinuz-recovery
+initrd  /initramfs-recovery.img
+options archisobasedir=${INSTALL_DIR_NAME} archisosearchuuid=${RECOVERY_UUID} copytoram=y
+EOF
+    echo "==> Particion de recuperacion lista."
+else
+    echo "AVISO: no se encontro el medio de arranque en ${LIVE_BOOTMNT}." >&2
+    echo "       (normal si no arrancaste desde el USB de NiranBox). La" >&2
+    echo "       particion de recuperacion quedo vacia, sin entrada de" >&2
+    echo "       arranque -- para restaurar de fabrica habria que usar el USB." >&2
+fi
 
 echo "==> Listo. Desmontando."
 umount -R /mnt

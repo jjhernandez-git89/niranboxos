@@ -12,4 +12,4 @@ exec gamescope \
   -f \
   --mangoapp \
   -- \
-  steam -tenfoot -pipewire-dmabuf -steamdeck -steamos3
+  /usr/local/bin/niranbox-session-launcher.sh
