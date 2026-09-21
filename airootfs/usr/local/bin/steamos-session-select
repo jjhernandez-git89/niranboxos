@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
-# Emula el comando real de SteamOS: cambia que sesion usa SDDM para el
-# autologin y cierra la sesion actual para que se aplique.
+# Emula el comando real de SteamOS: cambio RAPIDO de sesion, sin pasar por
+# la pantalla de eleccion (niranbox-chooser.sh) -- esa solo se ve al prender
+# la PC de cero. Deja escrito a cual sesion pasar y cierra la sesion actual;
+# niranbox-chooser.sh lee ese archivo al entrar de nuevo y va directo, sin
+# preguntar nada.
 #
 #   steamos-session-select plasma      -> pasa a Modo Escritorio (KDE Plasma)
-#   steamos-session-select gamescope   -> vuelve al modo consola (Steam)
+#   steamos-session-select gamescope   -> vuelve a Modo Steam Deck (Steam)
 #
 # Steam llama esto solo cuando detecta el flag -steamos3 (ver
 # start-gamescope-session.sh); si el boton "Cambiar a escritorio" de Steam no
@@ -14,10 +17,10 @@ set -eu
 TARGET="${1:-}"
 case "${TARGET}" in
     gamescope | gamescope-session)
-        SESSION_FILE="gamescope-session.desktop"
+        NEXT="gamescope"
         ;;
     plasma | plasma-persistent | desktop)
-        SESSION_FILE="plasma.desktop"
+        NEXT="plasma"
         ;;
     *)
         echo "Uso: steamos-session-select {gamescope|plasma}" >&2
@@ -25,14 +28,10 @@ case "${TARGET}" in
         ;;
 esac
 
-if [ ! -f "/usr/share/wayland-sessions/${SESSION_FILE}" ] && \
-   [ ! -f "/usr/share/xsessions/${SESSION_FILE}" ]; then
-    echo "Aviso: no encuentro ${SESSION_FILE} en wayland-sessions/xsessions." >&2
-    echo "Revisa 'ls /usr/share/wayland-sessions/' y ajusta el nombre si hace falta." >&2
-fi
+mkdir -p "${HOME}/.config/niranbox"
+echo "${NEXT}" > "${HOME}/.config/niranbox/.next-session"
 
-sudo sed -i "s/^Session=.*/Session=${SESSION_FILE}/" /etc/sddm.conf.d/autologin.conf
-
-# Cierra la sesion grafica actual; con Relogin=true, SDDM vuelve a entrar
-# sola con la sesion que acabamos de configurar arriba.
+# Cierra la sesion grafica actual; SDDM vuelve a entrar sola (autologin
+# sigue siendo niranbox-chooser.desktop), y el chooser ve el archivo de
+# arriba y pasa directo a la sesion pedida, sin mostrar nada.
 loginctl terminate-user "$(whoami)"

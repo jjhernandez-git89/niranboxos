@@ -97,10 +97,14 @@ install -Dm755 "${SRC}usr/local/bin/start-gamescope-session.sh" \
                /mnt/usr/local/bin/start-gamescope-session.sh
 install -Dm755 "${SRC}usr/local/bin/niranbox-session-launcher.sh" \
                /mnt/usr/local/bin/niranbox-session-launcher.sh
+install -Dm755 "${SRC}usr/local/bin/niranbox-chooser.sh" \
+               /mnt/usr/local/bin/niranbox-chooser.sh
 install -Dm755 "${SRC}usr/local/bin/steamos-session-select" \
                /mnt/usr/local/bin/steamos-session-select
 install -Dm644 "${SRC}usr/share/wayland-sessions/gamescope-session.desktop" \
                /mnt/usr/share/wayland-sessions/gamescope-session.desktop
+install -Dm644 "${SRC}usr/share/wayland-sessions/niranbox-chooser.desktop" \
+               /mnt/usr/share/wayland-sessions/niranbox-chooser.desktop
 install -Dm644 "${SRC}usr/share/applications/niranbox-volver-a-juego.desktop" \
                /mnt/usr/share/applications/niranbox-volver-a-juego.desktop
 install -Dm644 "${SRC}usr/share/pixmaps/niranbox-logo.png" \
@@ -140,7 +144,7 @@ mkdir -p /etc/sddm.conf.d
 cat > /etc/sddm.conf.d/autologin.conf <<EOF
 [Autologin]
 User=${DISTRO_USER}
-Session=gamescope-session.desktop
+Session=niranbox-chooser.desktop
 Relogin=true
 EOF
 

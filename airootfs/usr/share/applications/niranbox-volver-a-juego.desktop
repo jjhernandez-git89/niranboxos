@@ -1,6 +1,6 @@
 [Desktop Entry]
-Name=Volver a Modo Juego
-Comment=Vuelve a la sesion de Steam (modo consola)
+Name=Volver a Modo Steam Deck
+Comment=Vuelve a la sesion de Steam (Modo Steam Deck)
 Exec=steamos-session-select gamescope
 Icon=/usr/share/pixmaps/niranbox-logo.png
 Type=Application
