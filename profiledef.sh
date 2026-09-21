@@ -27,6 +27,7 @@ file_permissions=(
   ["/usr/local/bin/start-gamescope-session.sh"]="0:0:755"
   ["/usr/local/bin/niranbox-session-launcher.sh"]="0:0:755"
   ["/usr/local/bin/niranbox-chooser.sh"]="0:0:755"
+  ["/usr/local/bin/niranbox-apply-layout.sh"]="0:0:755"
   ["/usr/local/bin/xinitrc-niranbox-installer"]="0:0:755"
   ["/usr/local/bin/niranbox-installer-gui.sh"]="0:0:755"
   ["/usr/local/bin/steamos-session-select"]="0:0:755"

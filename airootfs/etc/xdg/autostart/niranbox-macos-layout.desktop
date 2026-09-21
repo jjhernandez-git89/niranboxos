@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=NiranBox - Aplicar layout
+NoDisplay=true
+Exec=/usr/local/bin/niranbox-apply-layout.sh
+OnlyShowIn=KDE;
+X-KDE-autostart-phase=2

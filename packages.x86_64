@@ -97,6 +97,12 @@ kate
 ark
 spectacle
 firefox
+
+# --- Apariencia del Modo Escritorio (iconos + que Firefox/apps GTK ---
+# combinen con el tema de KDE en vez de verse "de otro sistema")
+papirus-icon-theme
+breeze-gtk
+kde-gtk-config
 bluez
 bluez-utils
 

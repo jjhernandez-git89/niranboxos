@@ -113,6 +113,21 @@ install -Dm644 "${SRC}usr/share/pixmaps/niranbox-logo-small.png" \
                /mnt/usr/share/pixmaps/niranbox-logo-small.png
 mkdir -p /mnt/usr/share/plymouth/themes/niranbox
 cp -a "${SRC}usr/share/plymouth/themes/niranbox/." /mnt/usr/share/plymouth/themes/niranbox/
+
+# Modo Escritorio: layout tipo macOS (barra arriba + dock abajo), wallpaper
+# y tema oscuro por defecto (para usuarios nuevos, via /etc/skel).
+install -Dm644 "${SRC}usr/share/niranbox/macos-layout.js" \
+               /mnt/usr/share/niranbox/macos-layout.js
+install -Dm755 "${SRC}usr/local/bin/niranbox-apply-layout.sh" \
+               /mnt/usr/local/bin/niranbox-apply-layout.sh
+install -Dm644 "${SRC}etc/xdg/autostart/niranbox-macos-layout.desktop" \
+               /mnt/etc/xdg/autostart/niranbox-macos-layout.desktop
+install -Dm644 "${SRC}usr/share/wallpapers/niranbox/wallpaper.png" \
+               /mnt/usr/share/wallpapers/niranbox/wallpaper.png
+install -Dm644 "${SRC}etc/skel/.config/plasma-org.kde.plasma.desktop-appletsrc" \
+               /mnt/etc/skel/.config/plasma-org.kde.plasma.desktop-appletsrc
+install -Dm644 "${SRC}etc/skel/.config/kdeglobals" \
+               /mnt/etc/skel/.config/kdeglobals
 install -Dm644 "${SRC}etc/systemd/zram-generator.conf" \
                /mnt/etc/systemd/zram-generator.conf
 
