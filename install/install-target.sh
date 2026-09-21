@@ -81,7 +81,7 @@ mount "${EFI_PART}" /mnt/boot
 
 echo "==> Instalando paquetes base (pacstrap), puede tardar bastante"
 mapfile -t PKGS < <(grep -vE '^\s*#|^\s*$' "${PROFILE_DIR}/packages.x86_64")
-pacstrap -K /mnt "${PKGS[@]}"
+pacstrap -K /mnt "${PKGS[@]}" -- --noconfirm
 
 echo "==> Copiando personalizacion (usuario, sesiones, branding)"
 # Si estamos arrancados desde nuestra propia ISO live, estos archivos ya
