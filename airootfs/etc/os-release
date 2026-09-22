@@ -1,6 +1,6 @@
-NAME="NiranBox"
-PRETTY_NAME="NiranBox"
-ID=niranbox
+NAME="NiranBoxOS"
+PRETTY_NAME="NiranBoxOS"
+ID=niranboxos
 ID_LIKE=arch
 BUILD_ID=rolling
 ANSI_COLOR="38;2;23;147;209"

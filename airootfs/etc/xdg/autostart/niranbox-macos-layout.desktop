@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=NiranBox - Aplicar layout
+Name=NiranBoxOS - Aplicar layout
 NoDisplay=true
 Exec=/usr/local/bin/niranbox-apply-layout.sh
 OnlyShowIn=KDE;

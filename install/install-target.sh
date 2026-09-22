@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Instalador persistente de NiranBox. Se ejecuta DENTRO de la sesion live
+# Instalador persistente de NiranBoxOS. Se ejecuta DENTRO de la sesion live
 # (arrancada desde el USB), como root, apuntando a un disco real.
 #
 # ATENCION: esto borra por completo el disco de destino. Por defecto pide
@@ -144,7 +144,7 @@ hwclock --systohc
 echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
-echo "niranbox" > /etc/hostname
+echo "niranboxos" > /etc/hostname
 
 useradd -m -G wheel,video,input,render,audio,storage "${DISTRO_USER}"
 if [ -n "${DISTRO_PASSWORD}" ]; then
@@ -172,7 +172,7 @@ systemctl enable reflector.service
 systemctl --global enable pipewire.service pipewire-pulse.service wireplumber.service
 
 # Splash de arranque: mete el hook 'plymouth' en mkinitcpio (justo despues de
-# 'base udev') y activa el tema NiranBox, que regenera el initramfs solo.
+# 'base udev') y activa el tema NiranBoxOS, que regenera el initramfs solo.
 sed -i -E 's/^(HOOKS=\([^)]*\b(udev|systemd)\b)/\1 plymouth/' /etc/mkinitcpio.conf
 plymouth-set-default-theme -R niranbox
 
@@ -184,7 +184,7 @@ console-mode max
 EOF
 ROOT_UUID="$(findmnt -no UUID /)"
 cat > /boot/loader/entries/niranbox.conf <<EOF
-title   NiranBox
+title   NiranBoxOS
 linux   /vmlinuz-linux
 initrd  /initramfs-linux.img
 options root=UUID=${ROOT_UUID} rw quiet splash
@@ -193,8 +193,8 @@ EOF
 mkdir -p /usr/share/applications
 cat > /usr/share/applications/niranbox-restaurar.desktop <<'EOF'
 [Desktop Entry]
-Name=Restaurar NiranBox de fabrica
-Comment=Reinicia y abre el instalador para reinstalar NiranBox desde cero
+Name=Restaurar NiranBoxOS de fabrica
+Comment=Reinicia y abre el instalador para reinstalar NiranBoxOS desde cero
 Exec=systemctl reboot --boot-loader-entry=recovery
 Icon=/usr/share/pixmaps/niranbox-logo.png
 Type=Application
@@ -223,7 +223,7 @@ if [ -d "${LIVE_BOOTMNT}/${INSTALL_DIR_NAME}/x86_64" ]; then
     # mientras el sistema live la sigue usando para arrancar -> crash. Un
     # mini PC de gama gamer siempre trae RAM de sobra (8GB+) para esto.
     cat > /mnt/boot/loader/entries/recovery.conf <<EOF
-title   Restaurar NiranBox (borra todo y reinstala de fabrica)
+title   Restaurar NiranBoxOS (borra todo y reinstala de fabrica)
 linux   /vmlinuz-recovery
 initrd  /initramfs-recovery.img
 options archisobasedir=${INSTALL_DIR_NAME} archisosearchuuid=${RECOVERY_UUID} copytoram=y
@@ -231,7 +231,7 @@ EOF
     echo "==> Particion de recuperacion lista."
 else
     echo "AVISO: no se encontro el medio de arranque en ${LIVE_BOOTMNT}." >&2
-    echo "       (normal si no arrancaste desde el USB de NiranBox). La" >&2
+    echo "       (normal si no arrancaste desde el USB de NiranBoxOS). La" >&2
     echo "       particion de recuperacion quedo vacia, sin entrada de" >&2
     echo "       arranque -- para restaurar de fabrica habria que usar el USB." >&2
 fi

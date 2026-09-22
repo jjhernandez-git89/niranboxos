@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=NiranBox
+Name=NiranBoxOS
 Comment=Sesion de juego estilo SteamOS (Steam + gamescope)
 Exec=/usr/local/bin/start-gamescope-session.sh
 Type=Application

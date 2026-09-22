@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Instalador grafico de NiranBox (yad). Corre como root, dentro de la sesion
+# Instalador grafico de NiranBoxOS (yad). Corre como root, dentro de la sesion
 # X del USB live (ver xinitrc-niranbox-installer). Es un wrapper visual sobre
 # install/install-target.sh: junta disco/usuario/password con dialogos y
 # corre la instalacion real con una barra de progreso.
@@ -10,7 +10,7 @@ INSTALL_SCRIPT="/opt/niranbox/install-target.sh"
 # (1047x1047) hacia que la ventana ocupara toda la pantalla y los botones
 # quedaran fuera de la vista.
 LOGO="/usr/share/pixmaps/niranbox-logo-small.png"
-YAD_TITLE="Instalar NiranBox"
+YAD_TITLE="Instalar NiranBoxOS"
 
 yad_ok() { command -v yad >/dev/null 2>&1; }
 if ! yad_ok; then
@@ -20,7 +20,7 @@ fi
 
 # 1) Bienvenida
 yad --title="${YAD_TITLE}" --image="${LOGO}" --width=520 --center \
-    --text="<b>Bienvenido a NiranBox</b>\n\nEste asistente va a instalar NiranBox en el disco que elijas.\n\n<b>Esto borra todo el contenido de ese disco.</b> Asegurate de elegir el correcto." \
+    --text="<b>Bienvenido a NiranBoxOS</b>\n\nEste asistente va a instalar NiranBoxOS en el disco que elijas.\n\n<b>Esto borra todo el contenido de ese disco.</b> Asegurate de elegir el correcto." \
     --button="Cancelar:1" --button="Continuar:0"
 [ "$?" -eq 0 ] || exit 0
 
@@ -33,7 +33,7 @@ if [ "${#DISK_ROWS[@]}" -eq 0 ]; then
 fi
 DISK="$(yad --title="${YAD_TITLE}" --width=520 --height=320 --center \
     --list --separator="" --print-column=1 \
-    --text="Elige el disco donde instalar NiranBox:" \
+    --text="Elige el disco donde instalar NiranBoxOS:" \
     --column="Disco" --column="Detalle" \
     "${DISK_ROWS[@]}")"
 [ -n "${DISK}" ] || exit 0
@@ -78,7 +78,7 @@ INSTALL_PID=$!
         sleep 1
     done
 ) | yad --title="${YAD_TITLE}" --width=480 --center --progress --pulsate \
-        --text="Instalando NiranBox en ${DISK}...\nEsto puede tardar varios minutos." \
+        --text="Instalando NiranBoxOS en ${DISK}...\nEsto puede tardar varios minutos." \
         --no-buttons --auto-close
 
 wait "${INSTALL_PID}" 2>/dev/null
@@ -86,7 +86,7 @@ RC="$(cat "${LOGFILE}.rc" 2>/dev/null || echo 1)"
 
 if [ "${RC}" = "0" ]; then
     yad --title="${YAD_TITLE}" --width=480 --center \
-        --text="<b>Listo.</b> NiranBox quedo instalado en ${DISK}.\n\nAl reiniciar arranca directo a Steam. Para el Modo Escritorio (KDE Plasma), corre:\n<tt>steamos-session-select plasma</tt>" \
+        --text="<b>Listo.</b> NiranBoxOS quedo instalado en ${DISK}.\n\nAl reiniciar arranca directo a Steam. Para el Modo Escritorio (KDE Plasma), corre:\n<tt>steamos-session-select plasma</tt>" \
         --button="Reiniciar ahora:0" --button="Cerrar:1"
     if [ "$?" -eq 0 ]; then
         reboot

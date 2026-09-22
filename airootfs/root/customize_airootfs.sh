@@ -38,7 +38,7 @@ echo "LANG=en_US.UTF-8" > /etc/locale.conf
 # repository" apenas alguien intenta instalar desde el USB live.
 reflector --latest 10 --protocol https --sort rate --save /etc/pacman.d/mirrorlist || true
 
-# Deja NiranBox como tema Plymouth por defecto. Nota: el splash visual en el
+# Deja NiranBoxOS como tema Plymouth por defecto. Nota: el splash visual en el
 # propio USB live no esta garantizado (archiso arma su initramfs con su
 # propio preset, no con /etc/mkinitcpio.conf). La instalacion persistente en
 # disco (install/install-target.sh) si mete el hook 'plymouth' y regenera el

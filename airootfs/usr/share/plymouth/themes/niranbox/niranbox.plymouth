@@ -1,6 +1,6 @@
 [Plymouth Theme]
-Name=NiranBox
-Description=Tema de arranque de NiranBox
+Name=NiranBoxOS
+Description=Tema de arranque de NiranBoxOS
 ModuleName=script
 
 [script]

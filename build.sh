@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Construye la ISO de NiranBox con mkarchiso.
+# Construye la ISO de NiranBoxOS con mkarchiso.
 #
 # mkarchiso SOLO corre en Linux (usa pacstrap, chroot, mount de squashfs...).
 # No funciona en macOS. Ejecuta este script:

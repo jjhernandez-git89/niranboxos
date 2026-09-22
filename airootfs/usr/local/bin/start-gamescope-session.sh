@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Lanza la sesion "modo consola" NiranBox: gamescope como compositor Wayland
+# Lanza la sesion "modo consola" NiranBoxOS: gamescope como compositor Wayland
 # embebido, con Steam arrancando directo en Big Picture (-tenfoot).
 set -u
 

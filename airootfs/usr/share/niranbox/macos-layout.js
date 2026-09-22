@@ -1,4 +1,4 @@
-// Layout tipo macOS para NiranBox Modo Escritorio: barra delgada arriba
+// Layout tipo macOS para NiranBoxOS Modo Escritorio: barra delgada arriba
 // (menu, reloj, bandeja) + dock de iconos abajo, centrado, autoocultable.
 // API real de scripting de Plasma (ver develop.kde.org/docs/plasma/scripting).
 //

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Compila la ISO de NiranBox usando un contenedor de Arch Linux, para poder
+# Compila la ISO de NiranBoxOS usando un contenedor de Arch Linux, para poder
 # hacerlo desde un host que NO es Arch (ej. una VM Ubuntu/Debian). Necesita
 # Docker instalado en el host:
 #   sudo apt update && sudo apt install -y docker.io

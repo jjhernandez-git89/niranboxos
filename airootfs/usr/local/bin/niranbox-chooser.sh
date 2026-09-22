@@ -30,9 +30,9 @@ fi
 # preguntar. Se pisa con el codigo real del boton que se apriete.
 RC=1
 if command -v yad >/dev/null 2>&1; then
-    yad --title="NiranBox" --image="/usr/share/pixmaps/niranbox-logo-small.png" \
+    yad --title="NiranBoxOS" --image="/usr/share/pixmaps/niranbox-logo-small.png" \
         --width=560 --center --on-top \
-        --text="<b>Como quieres usar NiranBox?</b>\n\nSin elegir nada, arranca en Modo Escritorio." \
+        --text="<b>Como quieres usar NiranBoxOS?</b>\n\nSin elegir nada, arranca en Modo Escritorio." \
         --timeout=8 --timeout-indicator=bottom \
         --button="Modo Escritorio:1" \
         --button="Modo Steam Deck:0" \

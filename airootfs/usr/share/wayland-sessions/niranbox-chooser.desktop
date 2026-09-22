@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=NiranBox
+Name=NiranBoxOS
 Comment=Elegir Modo Steam Deck o Modo Escritorio
 Exec=/usr/local/bin/niranbox-chooser.sh
 Type=Application
