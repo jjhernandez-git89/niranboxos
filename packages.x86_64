@@ -98,6 +98,15 @@ ark
 spectacle
 firefox
 
+# --- Tienda de aplicaciones (Discover + Flatpak/Flathub) ---
+# Para que instalar programas en Modo Escritorio sea point-and-click, sin
+# terminal ni saber que es pacman. discover ya trae el backend de flatpak
+# integrado, no es un paquete aparte.
+flatpak
+flatpak-kcm
+flatpak-xdg-utils
+discover
+
 # --- Apariencia del Modo Escritorio (iconos + que Firefox/apps GTK ---
 # combinen con el tema de KDE en vez de verse "de otro sistema")
 papirus-icon-theme

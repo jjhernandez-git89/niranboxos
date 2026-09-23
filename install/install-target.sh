@@ -171,6 +171,10 @@ systemctl enable cups.service
 systemctl enable reflector.service
 systemctl --global enable pipewire.service pipewire-pulse.service wireplumber.service
 
+# Deja Flathub agregado de una vez: sin esto, Discover (la tienda de apps)
+# arranca vacia y el usuario tendria que configurar el repositorio a mano.
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo || true
+
 # Splash de arranque: mete el hook 'plymouth' en mkinitcpio (justo despues de
 # 'base udev') y activa el tema NiranBoxOS, que regenera el initramfs solo.
 sed -i -E 's/^(HOOKS=\([^)]*\b(udev|systemd)\b)/\1 plymouth/' /etc/mkinitcpio.conf
